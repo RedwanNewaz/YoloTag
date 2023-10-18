@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
     std::string output = vm["output"].as<std::string>();
     bool viewImg = vm["view"].as<bool>();
 
-    if (!fs::is_directory(configPath))
+    if (!fs::exists(configPath))
     {
         std::cerr << "config file not found !.\n";
         return 1;
