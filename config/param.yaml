@@ -1,0 +1,22 @@
+calibration: false
+camera_topics:
+  - "/logitec/image_raw/compressed"
+  - "/nexigo/image_raw/compressed"
+camera_configs:
+  - "head_camera_logitec_1920.yaml"
+  - "head_camera_nexigo_1920.yaml"
+
+transformation:
+  logitec_cam:
+    map: [-0.073, 1.702, 3.936, -0.192, 0.204, 0.058, 0.031]
+    nexigo: [0.164, 4.065, 1.957, 0.013, -0.164, 0.985, 0.051]
+  nexigo_cam:
+    map: [0.092, 1.610, 2.637, 0.695, 0.714, 0.003, 0.078]
+    logitec: [-0.314, 4.472, -0.531, 0.013, -0.164, 0.985, -0.051]
+
+# apriltag related params
+tag_size: 0.2
+nthreads: 16
+quad_decimate: 0.50
+quad_sigma: 0.05
+refine_edges: true
