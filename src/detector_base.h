@@ -4,6 +4,8 @@
 #include<opencv2/opencv.hpp>
 #include <yaml-cpp/yaml.h>
 #include <tf2/LinearMath/Transform.h>
+#include <unordered_set>
+#include <vector>
 
 using namespace std;
 using namespace cv;
@@ -51,7 +53,8 @@ namespace airlab{
         double _quad_sigma; 
         int _nthreads; 
         bool _refine_edges;
-        bool _calibration;     
+        bool _calibration;  
+        std::unordered_set<int> _tag_ids;   
 
     protected:
         virtual void detect(cv::Mat& img_uint8, int camIndex, std::vector<std::vector<double>>& results) = 0;
@@ -67,6 +70,10 @@ namespace airlab{
             _quad_sigma = _node_conf["quad_sigma"].as<double>();
             _nthreads = _node_conf["nthreads"].as<int>();
             _refine_edges = _node_conf["refine_edges"].as<bool>();
+            auto ids = _node_conf["tag_ids"].as<std::vector<int>>();
+            
+            for(const auto& item: ids)
+                _tag_ids.insert(item);
 
         }    
         

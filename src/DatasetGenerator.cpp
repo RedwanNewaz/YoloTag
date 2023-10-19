@@ -16,7 +16,7 @@ namespace airlab {
         auto imgFolder = datasetRootPath_ + "/img";
         auto annoFolder = datasetRootPath_ + "/annotation";
         checkDirs(imgFolder);
-        checkDirs(annoFolder);
+        // checkDirs(annoFolder);
 
 
     }
@@ -26,7 +26,7 @@ namespace airlab {
         formattedString << std::setw(4) << std::setfill('0') << imgCounter_;
         std::string basename = formattedString.str();
         std::string imgFile = datasetRootPath_ + "/img/" + basename + ".jpg";
-        std::string txtFile = datasetRootPath_ + "/annotation/" + basename + ".txt";
+        std::string txtFile = datasetRootPath_ + "/img/" + basename + ".txt";
         return std::make_pair(imgFile, txtFile);
     }
 

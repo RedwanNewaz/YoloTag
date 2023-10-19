@@ -4,6 +4,7 @@
 #include "detector_base.h"
 #include <apriltag.h>
 #include <tag36h11.h>
+#include <unordered_set>
 
 
 namespace airlab{
@@ -23,6 +24,7 @@ namespace airlab{
 
     void annotate_image(cv::Mat& image, zarray_t* detections);
 
+    
 
   };
 }

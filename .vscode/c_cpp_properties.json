@@ -1,0 +1,26 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/roboticslab/catkin_ws/devel/include/**",
+        "/opt/ros/noetic/include/**",
+        "/home/roboticslab/catkin_ws/src/bebop2_controller/include/**",
+        "/home/roboticslab/catkin_ws/src/bebop2_state_estimator/include/**",
+        "/home/roboticslab/catkin_ws/src/bebop_controller/include/**",
+        "/home/roboticslab/catkin_ws/src/bebop_autonomy/bebop_driver/include/**",
+        "/home/roboticslab/catkin_ws/src/mjpeg_cam_nodelet/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

@@ -7,6 +7,9 @@ namespace airlab
     apriltag_family_t *tf = tag36h11_create();
     apriltag_detector_add_family(_td, tf);
 
+
+
+
   }
 
   void ApriltagDetector::init(const std::string& param_file)
@@ -30,6 +33,21 @@ namespace airlab
     
     // compute pose with respect to camera  
     decode_results(detections, camIndex, results);
+
+    // normalize coordinat e
+    double imageWidth = image.cols;
+    double imageHeight = image.rows;
+
+    for(auto & item : results)
+    {
+      item[1] /= imageWidth;
+      item[2] /= imageHeight;
+      item[3] /= imageWidth;
+      item[4] /= imageHeight;
+    }
+
+
+    
     
     // overlay detections on images 
     annotate_image(image, detections);
@@ -80,25 +98,26 @@ namespace airlab
       {
           apriltag_detection_t *det;
           zarray_get(detections, i, &det);
-          if(det->hamming != 0)
+          int myInt = det->id;
+
+          if(det->hamming != 0 || _tag_ids.count(myInt) == 0)
               continue;
 
-          double xmin, ymin, xmax, ymax;
-          xmin = xmax = det->p[0][0];
-          ymin = ymax = det->p[0][1];
+          double xmin(10000.0), ymin(10000.0), xmax(-10000.0), ymax(-10000.0);
+          
 
           for (int j = 0; j < 4; ++j) {
               xmin = std::min(xmin, det->p[j][0]);
               ymin = std::min(ymin, det->p[j][1]);
-              xmax = std::max(xmin, det->p[j][0]);
-              ymax = std::max(xmin, det->p[j][1]);
+              xmax = std::max(xmax, det->p[j][0]);
+              ymax = std::max(ymax, det->p[j][1]);
           }
 
           double x = (xmin + xmax) / 2;
           double y = (ymin + ymax) / 2;
           double width = xmax - xmin;
           double height = ymax - ymin;
-          int myInt = det->id;
+          
           double index = static_cast<double>(myInt);
           results.push_back(std::vector<double>{index, x, y, width, height});
 
