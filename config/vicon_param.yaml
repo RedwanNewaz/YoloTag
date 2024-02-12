@@ -1,0 +1,2 @@
+output: "/home/roboticslab/yolo_ws/src/yolo_tag_detector/results/vicon"
+topic: "/apriltag/state/filtered"

@@ -1,0 +1,20 @@
+# make sure you define tag index before defining tag coordinates
+apriltags: [3, 62, 2, 63, 7, 67, 4, 64]
+# boundary: [-0.5, -0.5, 6.0, 8.0]
+boundary: [-2.773, -2.356, 5.527, 5.0355]
+# apriltags: [1, 2, 3, 4, 5, 6, 7, 8]
+# boundary: [-2.773, -2.356, 5.527, 5.0355]
+# the program will look for the tag index first to read each tag coordinate
+tag1: [0.80, 6.0, 0.724]
+tag2: [1.44, 6.0, 0.724]
+tag3: [2.045, 6.0, 0.724]
+tag4: [2.579, 6.0, 0.724]
+tag5: [3.175, 6.0, 0.724]
+tag6: [3.747, 6.0, 0.724]
+tag7: [4.343, 6.0, 0.724]
+tag8: [4.877, 6.0, 0.724]
+
+# complimentary filter gain. Higher value slower update, less noisy
+alpha: 0.96 #0.96 
+output: "/home/roboticslab/yolo_ws/src/yolo_tag_detector/results/apriltag"
+topic: "/apriltag/state/filtered"

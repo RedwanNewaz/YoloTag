@@ -1,0 +1,48 @@
+<launch>
+  <!-- Load URDF model -->
+<!--   <include file="$(find bebop_description)/launch/description.launch" /> -->
+    <arg name="launch_prefix" default="" />
+
+    <!-- configure camera input -->
+    <arg name="camera_name" default="/bebop" />
+    <arg name="image_topic" default="image_raw" />
+    <arg name="queue_size" default="1" />
+
+    <!-- apriltag_ros continuous detection node -->
+    <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="apriltag_ros_continuous_node" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)">
+        <!-- Remap topics from those used in code to those on the ROS network -->
+        <remap from="image_rect" to="$(arg camera_name)/$(arg image_topic)" />
+        <remap from="camera_info" to="$(arg camera_name)/camera_info" />
+
+        <param name="publish_tag_detections_image" type="bool" value="true" /><!-- default: false -->
+        <param name="queue_size" type="int" value="$(arg queue_size)" />
+
+        <!-- load parameters (incl. tag family, tags, etc.) -->
+        <rosparam command="load" file="$(find bebop2_controller)/config/settings.yaml"/>
+        <rosparam command="load" file="$(find bebop2_controller)/config/tags.yaml"/>
+    </node>
+
+
+  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se" clear_params="true">
+    <rosparam command="load" file="$(find bebop2_controller)/config/ekf.yaml" />
+    <remap from="odometry/filtered" to="/apriltag/state/filtered"/>
+  </node>
+
+<!-- /home/roboticslab/Storage/Old_bags/bebob2_bag/exp7.bag -->
+
+  <!-- Start state estimator node -->
+    <rosparam command="load" file="$(find yolo_tag_detector)/config/apriltag_param.yaml" />
+    <arg name="BAG_FILE" default="val_bag.bag" />
+    <arg name="BAG_ROOT" default="/home/roboticslab/Storage/Old_bags/yolotag_train_02.09.2024" />
+
+    <node pkg="bebop2_controller" type="bebop2_state_estimator_lpf" name="apriltag_test" />
+
+    <node pkg="bebop2_controller" type="bebop2_controller_node" name="controller_test" output="screen">
+        <remap from="/apriltag/state" to="/apriltag/state/filtered"/>
+    </node>
+
+    <node pkg="yolo_tag_detector" type="logger_node" name="logger_node" output="screen" />
+    <node name="rosbag" pkg="rosbag" type="play" args="--clock -s 25 $(arg BAG_ROOT)/$(arg BAG_FILE) --topics /bebop/image_raw /bebop/camera_info /bebop/image_raw/compressed"/>
+    
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find bebop2_controller)/config/tag.rviz"/>
+</launch>
